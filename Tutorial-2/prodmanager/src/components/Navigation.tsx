@@ -1,43 +1,67 @@
+// src/components/Navigation.tsx
+
 import React from 'react';
 
 interface NavigationProps {
     currentPage: string;
-    setCurrentPage: (page: string) => void;
+    onPageChange: (page: string) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ currentPage, setCurrentPage }) => {
+const Navigation: React.FC<NavigationProps> = ({ currentPage, onPageChange }) => {
     const navItems = [
         { id: 'home', label: 'Home' },
         { id: 'products', label: 'Products' },
-        { id: 'contact', label: 'Contact' }
+        { id: 'contact', label: 'Contact' },
     ];
 
-    return (
-        <nav className="bg-white border-b border-gray-200 py-4">
-            <div className="max-w-7xl mx-auto px-8">
-                <div className="flex justify-between items-center">
-                    {/* Logo/Brand */}
-                    <button
-                        onClick={() => setCurrentPage('home')}
-                        className="text-xl font-semibold text-gray-900"
-                    >
-                        ProdManage
-                    </button>
+    const handleClick = (pageId: string) => {
+        console.log('Navigation clicked:', pageId); // Debug log
+        onPageChange(pageId);
+    };
 
-                    <div className="flex space-x-8">
-                        {navItems.map((item) => (
-                            <button
-                                key={item.id}
-                                onClick={() => setCurrentPage(item.id)}
-                                className={`text-sm font-medium transition-colors ${
-                                    currentPage === item.id
-                                        ? 'text-blue-600'
-                                        : 'text-gray-600 hover:text-gray-900'
-                                }`}
-                            >
-                                {item.label}
-                            </button>
-                        ))}
+    return (
+        <nav className="bg-blue-600 text-white shadow-lg">
+            <div className="container mx-auto px-4">
+                <div className="flex items-center justify-between h-16">
+                    <div className="flex items-center">
+                        <h1 className="text-xl font-bold">ProdManager</h1>
+                    </div>
+                    <div className="hidden md:block">
+                        <div className="ml-10 flex items-baseline space-x-4">
+                            {navItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => handleClick(item.id)}
+                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                                        currentPage === item.id
+                                            ? 'bg-blue-700 text-white'
+                                            : 'text-blue-100 hover:bg-blue-500 hover:text-white'
+                                    }`}
+                                    type="button"
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    {/* Mobile menu for smaller screens */}
+                    <div className="md:hidden">
+                        <div className="flex flex-col space-y-2">
+                            {navItems.map((item) => (
+                                <button
+                                    key={item.id}
+                                    onClick={() => handleClick(item.id)}
+                                    className={`px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer ${
+                                        currentPage === item.id
+                                            ? 'bg-blue-700 text-white'
+                                            : 'text-blue-100 hover:bg-blue-500 hover:text-white'
+                                    }`}
+                                    type="button"
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

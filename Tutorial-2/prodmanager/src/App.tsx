@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import Navigation from './components/Navigation';
-import Home from './components/Home';
-import Products from './components/Products';
-import Contact from './components/Contact';
+// src/App.tsx
 
-type PageType = 'home' | 'products' | 'contact';
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import Navigation from './components/Navigation';
+import Products from './components/Products';
+import Home from './components/Home';
+import Contact from './components/Contact';
+import './App.css';
 
 const App: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState<PageType>('home');
+    const [currentPage, setCurrentPage] = React.useState('home');
 
-    const renderCurrentPage = () => {
+    const handlePageChange = (page: string) => {
+        console.log('App: Page changing from', currentPage, 'to', page); // Debug log
+        setCurrentPage(page);
+    };
+
+    const renderPage = () => {
+        console.log('App: Rendering page:', currentPage); // Debug log
         switch (currentPage) {
             case 'home':
                 return <Home />;
@@ -23,14 +32,12 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="App min-h-screen bg-white">
-
-            <Navigation currentPage={currentPage} setCurrentPage={setCurrentPage} />
-
-            <main>
-                {renderCurrentPage()}
-            </main>
-        </div>
+        <Provider store={store}>
+            <div className="App">
+                <Navigation currentPage={currentPage} onPageChange={handlePageChange} />
+                <main>{renderPage()}</main>
+            </div>
+        </Provider>
     );
 };
 
